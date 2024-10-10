@@ -1,0 +1,26 @@
+type Query {
+    getUserById(id: String!): User
+    getAllTodos(userId: String!): [Todo]
+}
+
+
+type User {
+    id: String!
+    emailId: String!
+}
+
+
+type Todo {
+    id: String!
+    userId: String!
+    title: String!
+    description: String!
+    status: String!
+}
+
+
+type Mutation {
+    saveUser(emailId: String!): User
+    createTodo(userId: String!, title: String!, description: String!, status: String!): Todo
+    deleteTodo(id: String!): Todo
+}
