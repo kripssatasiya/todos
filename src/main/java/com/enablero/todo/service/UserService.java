@@ -11,14 +11,18 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User saveUser(String emailId) {
-        User user =  new User();
-        user.setEmailId(emailId);
-        return userRepository.saveUser(user);
+    public User findOrCreateUser(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            user = new User();
+            user.setEmailId(email);
+            userRepository.save(user);
+        }
+        return user;
     }
 
-    public User getUserById(String id) {
-        return userRepository.getUserById(id);
+    public User getAllowListByUsers(String emailId) {
+        return userRepository.findByEmail(emailId);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.enablero.todo.resolver;
 
 import com.enablero.todo.entity.Todo;
+import com.enablero.todo.model.TodoInput;
 import com.enablero.todo.service.TodoService;
 import graphql.kickstart.tools.GraphQLMutationResolver;
 import graphql.kickstart.tools.GraphQLQueryResolver;
@@ -15,19 +16,17 @@ public class TodoResolver implements GraphQLQueryResolver , GraphQLMutationResol
     @Autowired
     private TodoService todoService;
 
-    public List<Todo> getAllTodos(String userId){
-        return todoService.getAllTodos(userId);
-    }
-
-    public Todo getTodoById(String id) {
-        return todoService.getTodoById(id);
-    }
-    public Todo createTodo(String userId, String title, String description, String status) {
-        return todoService.createTodo(userId, title, description, status);
+    public List<Todo> getAllTodos(String email){
+        return todoService.getAllTodos(email);
     }
 
 
-    public Todo deleteTodo(String id) {
+    public Todo createOrUpdateTodo(TodoInput input) {
+        return todoService.createOrUpdateTodo(input);
+    }
+
+
+    public String deleteTodo(String id) {
         return todoService.deleteTodo(id);
     }
 

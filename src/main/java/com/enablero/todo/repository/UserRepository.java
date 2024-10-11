@@ -11,12 +11,13 @@ public class UserRepository {
     @Autowired
     private DynamoDBMapper dynamoDBMapper;
 
-    public User saveUser(User user) {
+    public User save(User user) {
         dynamoDBMapper.save(user);
         return user;
     }
 
-    public User getUserById(String id) {
-        return dynamoDBMapper.load(User.class, id);
+    public User findByEmail(String emailId) {
+        return dynamoDBMapper.load(User.class, emailId);
     }
+
 }

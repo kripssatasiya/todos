@@ -8,17 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UserResolver implements GraphQLQueryResolver , GraphQLMutationResolver {
+public class UserResolver implements GraphQLMutationResolver {
 
     @Autowired
     private UserService userService;
 
-    public User saveUser(String emailId){
-       return userService.saveUser(emailId);
+    public User findOrCreateUser(String emailId){
+        return userService.findOrCreateUser(emailId);
     }
 
-    public User getUserById(String id) {
-        return userService.getUserById(id);
+    public User getAllowListByUsers(String emailId) {
+        return userService.getAllowListByUsers(emailId);
     }
 
 }
