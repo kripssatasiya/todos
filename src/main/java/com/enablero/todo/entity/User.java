@@ -23,7 +23,7 @@ public class User {
         this.id = id;
     }
 
-    @DynamoDBAttribute
+    @DynamoDBAttribute(attributeName = "emailId")
     public String getEmailId() {
         return emailId;
     }
