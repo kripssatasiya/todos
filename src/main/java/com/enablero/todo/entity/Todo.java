@@ -51,7 +51,7 @@ public class Todo {
         this.title = title;
     }
 
-    @DynamoDBAttribute
+    @DynamoDBAttribute(attributeName = "description")
     public String getDescription() {
         return description;
     }
@@ -60,7 +60,7 @@ public class Todo {
         this.description = description;
     }
 
-    @DynamoDBAttribute
+    @DynamoDBAttribute(attributeName = "status")
     public TodoStatus getStatus() {
         return status;
     }
@@ -69,7 +69,7 @@ public class Todo {
         this.status = status;
     }
 
-    @DynamoDBAttribute
+    @DynamoDBAttribute(attributeName = "createdDt")
     public LocalDateTime getCreatedDt() {
         return createdDt;
     }
@@ -78,7 +78,7 @@ public class Todo {
         this.createdDt = createdDt;
     }
 
-    @DynamoDBAttribute
+    @DynamoDBAttribute(attributeName = "updateDt")
     public LocalDateTime getUpdateDt() {
         return updateDt;
     }

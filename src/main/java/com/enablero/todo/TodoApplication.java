@@ -31,4 +31,6 @@ public class TodoApplication implements CommandLineRunner {
 		}
 	}
 
+	// java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
+
 }

@@ -20,4 +20,6 @@ public class UserRepository {
         return dynamoDBMapper.load(User.class, emailId);
     }
 
+
+
 }
