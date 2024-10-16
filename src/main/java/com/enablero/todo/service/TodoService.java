@@ -1,7 +1,7 @@
 package com.enablero.todo.service;
 
-import com.enablero.todo.entity.Todo;
-import com.enablero.todo.model.TodoInput;
+import com.enablero.todo.entity.TodoEntity;
+import com.enablero.todo.model.Todo;
 import com.enablero.todo.model.TodoStatus;
 import com.enablero.todo.repository.TodoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,39 +13,79 @@ import java.util.List;
 @Service
 public class TodoService {
 
-    @Autowired
+
     private TodoRepository todoRepository;
 
-    public List<Todo> getAllTodos(String email){
+    @Autowired
+    public TodoService(TodoRepository todoRepository) {
+        this.todoRepository = todoRepository;
+    }
+
+    public List<TodoEntity> getAllTodos(String email) {
         return todoRepository.getAllTodos(email);
     }
 
-    public Todo createOrUpdateTodo(TodoInput input){
-        Todo existingTodo = todoRepository.findById(input.getId());
-        if (existingTodo != null) {
-            existingTodo.setTitle(input.getTitle());
-            existingTodo.setDescription(input.getDescription());
-            existingTodo.setStatus(input.getStatus());
-            existingTodo.setUpdateDt(input.getUpdateDt());
-       }
-        else{
-            Todo newTodo = new Todo();
-            newTodo.setId(input.getId());
-            newTodo.setEmail(input.getEmail());
-            newTodo.setTitle(input.getTitle());
-            newTodo.setDescription(input.getDescription());
-            newTodo.setStatus(input.getStatus());
-            newTodo.setCreatedDt(LocalDateTime.now());
-            newTodo.setUpdateDt(LocalDateTime.now());
-            existingTodo = newTodo;
+
+//    public TodoEntity createOrUpdateTodo(Todo input){
+//        TodoEntity existingTodoEntity = todoRepository.findById(input.getId());
+//        if (existingTodoEntity != null) {
+//            existingTodoEntity.setTitle(input.getTitle());
+//            existingTodoEntity.setDescription(input.getDescription());
+//            existingTodoEntity.setStatus(input.getStatus());
+//            existingTodoEntity.setUpdateDt(input.getUpdateDt());
+//       }
+//        else{
+//            TodoEntity newTodoEntity = new TodoEntity();
+//            newTodoEntity.setId(input.getId());
+//            newTodoEntity.setEmail(input.getEmail());
+//            newTodoEntity.setTitle(input.getTitle());
+//            newTodoEntity.setDescription(input.getDescription());
+//            newTodoEntity.setStatus(input.getStatus());
+//            newTodoEntity.setCreatedDt(LocalDateTime.now());
+//            newTodoEntity.setUpdateDt(LocalDateTime.now());
+//            existingTodoEntity = newTodoEntity;
+//        }
+//
+//        return todoRepository.createOrUpdateTodo(existingTodoEntity);
+//}
+
+
+    public TodoEntity createOrUpdateTodo(Todo todoInput) {
+        if (todoInput == null) {
+            throw new RuntimeException("TodoInput object cannot be null");
         }
-        return todoRepository.createOrUpdateTodo(existingTodo);
+        TodoEntity todo;
+        if (todoInput.getId() != null) {
+            todo = todoRepository.findById(todoInput.getId());
+            if (todo == null || !todo.getEmail().equals(todoInput.getEmail())) {
+                throw new RuntimeException("Todo not found or unauthorized access");
+            }
+        } else {
+            todo = new TodoEntity();
+            todo.setCreatedDt(LocalDateTime.now());
+        }
+        if (todoInput.getEmail() != null) {
+            todo.setEmail(todoInput.getEmail());
+        }
+        if (todoInput.getTitle() != null) {
+            todo.setTitle(todoInput.getTitle());
+        }
+        if (todoInput.getDescription() != null) {
+            todo.setDescription(todoInput.getDescription());
+        }
+        if (todoInput.getStatus() != null) {
+            todo.setStatus(todoInput.getStatus());
+        }
+        todo.setUpdateDt(LocalDateTime.now());
+        System.out.println(todo.toString());
+        return todoRepository.createOrUpdateTodo(todo);
     }
 
     public String deleteTodo(String id) {
-        Todo todo = todoRepository.findById(id);
-        if (todo != null) {
-            todo.setStatus(TodoStatus.ARCHIVED);
+        TodoEntity todoEntity = todoRepository.findById(id);
+        if (todoEntity != null) {
+            todoEntity.setStatus(TodoStatus.ARCHIVED);
+            todoRepository.createOrUpdateTodo(todoEntity);
             return "Todo marked as deleted!";
         }
          return "Todo not found.";

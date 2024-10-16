@@ -1,24 +1,29 @@
 package com.enablero.todo.resolver;
 
-import com.enablero.todo.entity.User;
+import com.enablero.todo.entity.UserEntity;
 import com.enablero.todo.service.UserService;
-import graphql.kickstart.tools.GraphQLMutationResolver;
-import graphql.kickstart.tools.GraphQLQueryResolver;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
-@Component
-public class UserResolver implements GraphQLMutationResolver {
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+public class UserResolver {
 
     @Autowired
     private UserService userService;
 
-    public User findOrCreateUser(String emailId){
-        return userService.findOrCreateUser(emailId);
-    }
+//    @MutationMapping
+//    public UserEntity findOrCreateUser(String emailId){
+//        return userService.findOrCreateUser(emailId);
+//    }
 
-    public User getAllowListByUsers(String emailId) {
-        return userService.getAllowListByUsers(emailId);
+    @QueryMapping("getAllowListByUsers")
+    public List<String> getAllowListByUsers() {
+        return userService.getAllowListByUsers();
     }
 
 }

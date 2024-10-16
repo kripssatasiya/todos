@@ -1,9 +1,11 @@
 package com.enablero.todo.service;
 
-import com.enablero.todo.entity.User;
+import com.enablero.todo.entity.UserEntity;
 import com.enablero.todo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -11,18 +13,18 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public User findOrCreateUser(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            user = new User();
-            user.setEmailId(email);
-            userRepository.save(user);
-        }
-        return user;
-    }
+//    public UserEntity findOrCreateUser(String email) {
+//        UserEntity userEntity = userRepository.findByEmail(email);
+//        if (userEntity == null) {
+//            userEntity = new UserEntity();
+//            userEntity.setEmailId(email);
+//            userRepository.save(userEntity);
+//        }
+//        return userEntity;
+//    }
 
-    public User getAllowListByUsers(String emailId) {
-        return userRepository.findByEmail(emailId);
+    public List<String> getAllowListByUsers() {
+        return userRepository.findAll();
     }
 
 }

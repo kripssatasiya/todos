@@ -1,32 +1,40 @@
 package com.enablero.todo.resolver;
 
-import com.enablero.todo.entity.Todo;
-import com.enablero.todo.model.TodoInput;
+import com.enablero.todo.entity.TodoEntity;
+import com.enablero.todo.model.Todo;
 import com.enablero.todo.service.TodoService;
-import graphql.kickstart.tools.GraphQLMutationResolver;
-import graphql.kickstart.tools.GraphQLQueryResolver;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Component
-public class TodoResolver implements GraphQLQueryResolver , GraphQLMutationResolver {
+@RestController
+public class TodoResolver {
 
-    @Autowired
     private TodoService todoService;
 
-    public List<Todo> getAllTodos(String email){
+    @Autowired
+    public TodoResolver(TodoService todoService) {
+        this.todoService = todoService;
+    }
+
+
+    @QueryMapping("getAllTodos")
+    public List<TodoEntity> getAllTodos(@Argument("email") String email){
         return todoService.getAllTodos(email);
     }
 
 
-    public Todo createOrUpdateTodo(TodoInput input) {
+    @MutationMapping("createOrUpdateTodo")
+    public TodoEntity createOrUpdateTodo(@Argument("input") Todo input) {
         return todoService.createOrUpdateTodo(input);
     }
 
-
-    public String deleteTodo(String id) {
+   @MutationMapping("deleteTodo")
+    public String deleteTodo(@Argument("id") String id) {
         return todoService.deleteTodo(id);
     }
 
