@@ -13,7 +13,6 @@ import java.util.List;
 @Service
 public class TodoService {
 
-
     private TodoRepository todoRepository;
 
     @Autowired
@@ -25,35 +24,11 @@ public class TodoService {
         return todoRepository.getAllTodos(email);
     }
 
-
-//    public TodoEntity createOrUpdateTodo(Todo input){
-//        TodoEntity existingTodoEntity = todoRepository.findById(input.getId());
-//        if (existingTodoEntity != null) {
-//            existingTodoEntity.setTitle(input.getTitle());
-//            existingTodoEntity.setDescription(input.getDescription());
-//            existingTodoEntity.setStatus(input.getStatus());
-//            existingTodoEntity.setUpdateDt(input.getUpdateDt());
-//       }
-//        else{
-//            TodoEntity newTodoEntity = new TodoEntity();
-//            newTodoEntity.setId(input.getId());
-//            newTodoEntity.setEmail(input.getEmail());
-//            newTodoEntity.setTitle(input.getTitle());
-//            newTodoEntity.setDescription(input.getDescription());
-//            newTodoEntity.setStatus(input.getStatus());
-//            newTodoEntity.setCreatedDt(LocalDateTime.now());
-//            newTodoEntity.setUpdateDt(LocalDateTime.now());
-//            existingTodoEntity = newTodoEntity;
-//        }
-//
-//        return todoRepository.createOrUpdateTodo(existingTodoEntity);
-//}
-
-
     public TodoEntity createOrUpdateTodo(Todo todoInput) {
         if (todoInput == null) {
             throw new RuntimeException("TodoInput object cannot be null");
         }
+
         TodoEntity todo;
         if (todoInput.getId() != null) {
             todo = todoRepository.findById(todoInput.getId());
@@ -63,7 +38,9 @@ public class TodoService {
         } else {
             todo = new TodoEntity();
             todo.setCreatedDt(LocalDateTime.now());
+            todo.setStatus(TodoStatus.PENDING);
         }
+
         if (todoInput.getEmail() != null) {
             todo.setEmail(todoInput.getEmail());
         }

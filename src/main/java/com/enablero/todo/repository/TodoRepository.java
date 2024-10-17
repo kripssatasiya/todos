@@ -21,7 +21,7 @@ public class TodoRepository {
 
     public List<TodoEntity> getAllTodos(String email) {
         return dynamoDBMapper.query(TodoEntity.class, new DynamoDBQueryExpression<TodoEntity>()
-                .withIndexName("UserGSI")
+                .withIndexName("email")
                 .withConsistentRead(false)
                 .withKeyConditionExpression("email = :email")
                 .withExpressionAttributeValues(Map.of(":email", new AttributeValue().withS(email))));
