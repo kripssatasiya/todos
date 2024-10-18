@@ -13,15 +13,6 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-//    public UserEntity findOrCreateUser(String email) {
-//        UserEntity userEntity = userRepository.findByEmail(email);
-//        if (userEntity == null) {
-//            userEntity = new UserEntity();
-//            userEntity.setEmailId(email);
-//            userRepository.save(userEntity);
-//        }
-//        return userEntity;
-//    }
 
     public List<String> getAllowListByUsers() {
         return userRepository.findAll();

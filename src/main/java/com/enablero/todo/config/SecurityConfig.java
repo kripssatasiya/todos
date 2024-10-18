@@ -1,7 +1,11 @@
 package com.enablero.todo.config;
 
+import com.enablero.todo.repository.UserRepository;
+import com.enablero.todo.security.SecurityFilter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,6 +26,8 @@ public class SecurityConfig {
     @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}")
     String jwtJwkSetUri;
 
+    @Autowired
+    private UserRepository userRepository;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -51,5 +57,18 @@ public class SecurityConfig {
 
         return source;
     }
+
+
+    @Bean
+    public FilterRegistrationBean<SecurityFilter> loggingFilter() {
+        FilterRegistrationBean<SecurityFilter> registrationBean = new FilterRegistrationBean<>();
+
+        registrationBean.setFilter(new SecurityFilter(userRepository));
+        registrationBean.addUrlPatterns("/graphql");
+        registrationBean.setOrder(1);
+
+        return registrationBean;
+    }
+
 }
 

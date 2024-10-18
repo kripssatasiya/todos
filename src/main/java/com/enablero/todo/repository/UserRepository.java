@@ -15,15 +15,9 @@ public class UserRepository {
     @Autowired
     private DynamoDBMapper dynamoDBMapper;
 
-//    public UserEntity save(UserEntity userEntity) {
-//        dynamoDBMapper.save(userEntity);
-//        return userEntity;
-//    }
-
     public UserEntity findByEmail(String emailId) {
         return dynamoDBMapper.load(UserEntity.class, emailId);
     }
-
 
     public List<String> findAll(){
         DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();

@@ -24,7 +24,7 @@ public class TodoService {
         return todoRepository.getAllTodos(email);
     }
 
-    public TodoEntity createOrUpdateTodo(Todo todoInput) {
+    public TodoEntity createOrUpdateTodo(Todo todoInput , String email) {
         if (todoInput == null) {
             throw new RuntimeException("TodoInput object cannot be null");
         }
@@ -32,7 +32,7 @@ public class TodoService {
         TodoEntity todo;
         if (todoInput.getId() != null) {
             todo = todoRepository.findById(todoInput.getId());
-            if (todo == null || !todo.getEmail().equals(todoInput.getEmail())) {
+            if (todo == null || !todo.getEmail().equals(email)) {
                 throw new RuntimeException("Todo not found or unauthorized access");
             }
         } else {
@@ -42,8 +42,9 @@ public class TodoService {
         }
 
         if (todoInput.getEmail() != null) {
-            todo.setEmail(todoInput.getEmail());
+            todo.setEmail(email);
         }
+
         if (todoInput.getTitle() != null) {
             todo.setTitle(todoInput.getTitle());
         }

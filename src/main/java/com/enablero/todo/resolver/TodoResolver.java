@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,14 +26,20 @@ public class TodoResolver {
 
 
     @QueryMapping("getAllTodos")
-    public List<TodoEntity> getAllTodos(@Argument("email") String email){
+    public List<TodoEntity> getAllTodos(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Jwt jwt = (Jwt) authentication.getPrincipal();
+        String email = jwt.getClaimAsString("email");
         return todoService.getAllTodos(email);
     }
 
 
     @MutationMapping("createOrUpdateTodo")
     public TodoEntity createOrUpdateTodo(@Argument("input") Todo input) {
-        return todoService.createOrUpdateTodo(input);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Jwt jwt = (Jwt) authentication.getPrincipal();
+        String email = jwt.getClaimAsString("email");
+        return todoService.createOrUpdateTodo(input , email);
     }
 
    @MutationMapping("deleteTodo")

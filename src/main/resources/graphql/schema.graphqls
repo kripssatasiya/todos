@@ -1,5 +1,5 @@
 type Query {
-    getAllTodos(email: String!): [Todo]
+    getAllTodos: [Todo]
     getAllowListByUsers: [String]
 }
 
