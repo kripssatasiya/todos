@@ -22,17 +22,21 @@ public class TodoRepository {
     }
 
     public List<TodoEntity> getAllTodos(String email) {
+        String filterForDelete = "#status <> :status";
 
-        String filterForDelete = "email = :email and status <> :status";
-        Map<String , AttributeValue> afterFilter = new HashMap<>();
-        afterFilter.put(":status" , new AttributeValue("ARCHIVED"));
+        Map<String, AttributeValue> expressionAttributeValues = new HashMap<>();
+        expressionAttributeValues.put(":status", new AttributeValue("ARCHIVED"));
+        expressionAttributeValues.put(":email", new AttributeValue().withS(email));
+
+        Map<String, String> expressionAttributeNames = new HashMap<>();
+        expressionAttributeNames.put("#status", "status");
 
         return dynamoDBMapper.query(TodoEntity.class, new DynamoDBQueryExpression<TodoEntity>()
                 .withIndexName("email")
                 .withKeyConditionExpression("email = :email")
-                .withExpressionAttributeValues(Map.of(":email", new AttributeValue().withS(email)))
+                .withExpressionAttributeValues(expressionAttributeValues)
                 .withFilterExpression(filterForDelete)
-                .withExpressionAttributeValues(afterFilter)
+                .withExpressionAttributeNames(expressionAttributeNames)
                 .withConsistentRead(false));
     }
 

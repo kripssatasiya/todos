@@ -30,6 +30,7 @@ public class TodoResolver {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Jwt jwt = (Jwt) authentication.getPrincipal();
         String email = jwt.getClaimAsString("email");
+        System.out.println("Email extracted and passed to service = " +email);
         return todoService.getAllTodos(email);
     }
 

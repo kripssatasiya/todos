@@ -47,7 +47,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000" , "http://localhost:3001" , "http://localhost:8000" , "http://localhost:8080"));
         config.setAllowedMethods(Arrays.asList("GET" , "POST" , "PUT" , "DELETE"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
@@ -57,18 +57,5 @@ public class SecurityConfig {
 
         return source;
     }
-
-
-    @Bean
-    public FilterRegistrationBean<SecurityFilter> loggingFilter() {
-        FilterRegistrationBean<SecurityFilter> registrationBean = new FilterRegistrationBean<>();
-
-        registrationBean.setFilter(new SecurityFilter(userRepository));
-        registrationBean.addUrlPatterns("/graphql");
-        registrationBean.setOrder(1);
-
-        return registrationBean;
-    }
-
 }
 

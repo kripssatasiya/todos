@@ -21,6 +21,7 @@ public class TodoService {
     }
 
     public List<TodoEntity> getAllTodos(String email) {
+        System.out.println("Email  passed to repository = " +email);
         return todoRepository.getAllTodos(email);
     }
 
@@ -41,9 +42,7 @@ public class TodoService {
             todo.setStatus(TodoStatus.PENDING);
         }
 
-        if (todoInput.getEmail() != null) {
-            todo.setEmail(email);
-        }
+        todo.setEmail(email);
 
         if (todoInput.getTitle() != null) {
             todo.setTitle(todoInput.getTitle());

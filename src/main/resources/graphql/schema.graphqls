@@ -22,7 +22,6 @@ type Todo {
 
 input TodoInput {
     id: ID
-    email: String!
     title: String!
     description: String
     status: String
