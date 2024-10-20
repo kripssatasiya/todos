@@ -48,8 +48,5 @@ public class TodoRepository {
         return dynamoDBMapper.load(TodoEntity.class, id);
     }
 
-
-
-
 }
 
