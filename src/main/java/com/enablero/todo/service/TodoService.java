@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class TodoService {
 
-    private TodoRepository todoRepository;
+    private final TodoRepository todoRepository;
 
     @Autowired
     public TodoService(TodoRepository todoRepository) {
@@ -54,7 +54,6 @@ public class TodoService {
             todo.setStatus(todoInput.getStatus());
         }
         todo.setUpdateDt(LocalDateTime.now());
-        System.out.println(todo.toString());
         return todoRepository.createOrUpdateTodo(todo);
     }
 
@@ -66,6 +65,6 @@ public class TodoService {
             return "Todo marked as deleted!";
         }
          return "Todo not found.";
-
     }
+
 }

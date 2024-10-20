@@ -16,8 +16,12 @@ import java.util.stream.Collectors;
 @Repository
 public class UserRepository {
 
+    private final DynamoDBMapper dynamoDBMapper;
+
     @Autowired
-    private DynamoDBMapper dynamoDBMapper;
+    public UserRepository(DynamoDBMapper dynamoDBMapper) {
+        this.dynamoDBMapper = dynamoDBMapper;
+    }
 
     public UserEntity findByEmail(String emailId) {
         Map<String, AttributeValue> attributeValues = new HashMap<>();

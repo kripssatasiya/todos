@@ -17,8 +17,7 @@ import java.util.List;
 @RestController
 public class TodoResolver {
 
-    private TodoService todoService;
-
+    private final TodoService todoService;
     @Autowired
     public TodoResolver(TodoService todoService) {
         this.todoService = todoService;
@@ -33,7 +32,6 @@ public class TodoResolver {
         System.out.println("Email extracted and passed to service = " +email);
         return todoService.getAllTodos(email);
     }
-
 
     @MutationMapping("createOrUpdateTodo")
     public TodoEntity createOrUpdateTodo(@Argument("input") Todo input) {

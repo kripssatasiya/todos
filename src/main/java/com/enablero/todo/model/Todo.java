@@ -1,9 +1,16 @@
 package com.enablero.todo.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Todo {
-
     private String id;
     private String email;
     private String title;
@@ -11,76 +18,5 @@ public class Todo {
     private TodoStatus status;
     private LocalDateTime createdDt;
     private LocalDateTime updateDt;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public TodoStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TodoStatus status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getCreatedDt() {
-        return createdDt;
-    }
-
-    public void setCreatedDt(LocalDateTime createdDt) {
-        this.createdDt = createdDt;
-    }
-
-    public LocalDateTime getUpdateDt() {
-        return updateDt;
-    }
-
-    public void setUpdateDt(LocalDateTime updateDt) {
-        this.updateDt = updateDt;
-    }
-
-
-    public Todo() {
-
-    }
-
-    public Todo(String id, String email, String title, String description, TodoStatus status, LocalDateTime createdDt, LocalDateTime updateDt) {
-        this.id = id;
-        this.email = email;
-        this.title = title;
-        this.description = description;
-        this.status = status;
-        this.createdDt = createdDt;
-        this.updateDt = updateDt;
-    }
 
 }

@@ -4,7 +4,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.enablero.todo.entity.TodoEntity;
-import com.enablero.todo.model.TodoStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +14,7 @@ import java.util.Map;
 @Repository
 public class TodoRepository {
 
-    private DynamoDBMapper dynamoDBMapper;
+    private final DynamoDBMapper dynamoDBMapper;
     @Autowired
     public TodoRepository(DynamoDBMapper dynamoDBMapper) {
         this.dynamoDBMapper = dynamoDBMapper;
@@ -40,20 +39,16 @@ public class TodoRepository {
                 .withConsistentRead(false));
     }
 
-    public TodoEntity findByIdEmail(String id , String email) {
-        return dynamoDBMapper.load(TodoEntity.class, id,email);
+    public TodoEntity createOrUpdateTodo(TodoEntity todo) {
+        dynamoDBMapper.save(todo);
+        return todo;
     }
-
 
     public TodoEntity findById(String id) {
         return dynamoDBMapper.load(TodoEntity.class, id);
     }
 
 
-    public TodoEntity createOrUpdateTodo(TodoEntity todo) {
-        dynamoDBMapper.save(todo);
-        return todo;
-    }
 
 
 }

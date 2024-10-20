@@ -8,13 +8,11 @@ public class LocalDateTimeConverter implements DynamoDBTypeConverter<String, Loc
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
-    // LocalDateTime to String (for storing in DynamoDB)
     @Override
     public String convert(LocalDateTime localDateTime) {
         return localDateTime != null ? localDateTime.format(formatter) : null;
     }
 
-    // String back to LocalDateTime (when retrieving from DynamoDB)
     @Override
     public LocalDateTime unconvert(String string) {
         return string != null ? LocalDateTime.parse(string, formatter) : null;
