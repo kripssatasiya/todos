@@ -1,9 +1,9 @@
 package com.enablero.todo.service.impl;
 
+import com.enablero.todo.dataprovider.TodoDataProvider;
 import com.enablero.todo.entity.TodoEntity;
 import com.enablero.todo.model.Todo;
 import com.enablero.todo.model.TodoStatus;
-import com.enablero.todo.repository.TodoRepository;
 import com.enablero.todo.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,18 +14,18 @@ import java.util.List;
 @Service
 public class TodoServiceImpl implements TodoService {
 
-    private final TodoRepository todoRepository;
-
+    private final TodoDataProvider todoDataProvider;
     @Autowired
-    public TodoServiceImpl(TodoRepository todoRepository) {
-        this.todoRepository = todoRepository;
+    public TodoServiceImpl(TodoDataProvider todoDataProvider) {
+        this.todoDataProvider = todoDataProvider;
     }
 
     @Override
     public List<TodoEntity> getAllTodos(String email) {
         System.out.println("Email  passed to repository = " +email);
-        return todoRepository.getAllTodos(email);
+        return todoDataProvider.getAllTodos(email);
     }
+
     @Override
     public TodoEntity createOrUpdateTodo(Todo todoInput , String email) {
         if (todoInput == null) {
@@ -34,7 +34,7 @@ public class TodoServiceImpl implements TodoService {
 
         TodoEntity todo;
         if (todoInput.getId() != null) {
-            todo = todoRepository.findById(todoInput.getId());
+            todo = todoDataProvider.findById(todoInput.getId());
             if (todo == null || !todo.getEmail().equals(email)) {
                 throw new RuntimeException("Todo not found or unauthorized access");
             }
@@ -56,18 +56,18 @@ public class TodoServiceImpl implements TodoService {
             todo.setStatus(todoInput.getStatus());
         }
         todo.setUpdateDt(LocalDateTime.now());
-        return todoRepository.createOrUpdateTodo(todo);
+        return todoDataProvider.createOrUpdateTodo(todo);
     }
+
     @Override
     public String deleteTodo(String id) {
-        TodoEntity todoEntity = todoRepository.findById(id);
+        TodoEntity todoEntity = todoDataProvider.findById(id);
         if (todoEntity != null) {
             todoEntity.setStatus(TodoStatus.ARCHIVED);
-            todoRepository.createOrUpdateTodo(todoEntity);
+            todoDataProvider.createOrUpdateTodo(todoEntity);
             return "Todo marked as deleted!";
         }
         return "Todo not found.";
     }
-
 
 }

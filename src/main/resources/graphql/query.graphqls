@@ -3,11 +3,6 @@ type Query {
     getAllTodos: [Todo]
 }
 
-type Mutation {
-    createOrUpdateTodo(input: TodoInput!): Todo
-    deleteTodo(id: ID!): String
-}
-
 scalar LocalDateTime
 
 type Todo {
@@ -19,13 +14,3 @@ type Todo {
     createdDt: LocalDateTime
     updateDt: LocalDateTime
 }
-
-input TodoInput {
-    id: ID
-    title: String!
-    description: String
-    status: String
-    createdDt: LocalDateTime
-    updateDt: LocalDateTime
-}
-
