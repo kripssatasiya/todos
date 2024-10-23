@@ -33,7 +33,7 @@ public class SecurityConfig {
                 .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
         http
-                .authorizeHttpRequests(req -> { req.requestMatchers("/graphql").permitAll().anyRequest().authenticated();});
+                .authorizeHttpRequests(req -> { req.requestMatchers("/graphql").authenticated().anyRequest().authenticated();});
         http
                 .oauth2ResourceServer(oauth -> {
                     oauth.jwt(jwt -> {jwt.jwkSetUri(jwtJwkSetUri);});

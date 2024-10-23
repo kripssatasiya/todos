@@ -42,6 +42,8 @@ public class SecurityFilter implements Filter {
                    return;
                }
                else{
+                   UserContextHolder.setCurrentUserEmail(email);
+
                     JwtAuthenticationToken originalAuth = (JwtAuthenticationToken) authentication;
                     JwtAuthenticationToken newAuth = new JwtAuthenticationToken(originalAuth.getToken(),
                            originalAuth.getAuthorities());
@@ -57,6 +59,9 @@ public class SecurityFilter implements Filter {
            response.setCharacterEncoding("UTF-8");
            response.getWriter().write("{\"message\": \"Unsuccessful\", \"details\": \"An error occurred during authentication: " + e.getMessage() + "\", \"httpStatusCode\": \"401 (UNAUTHORIZED)\"}");
            response.getWriter().flush();
+       }
+       finally {
+           UserContextHolder.clear();
        }
     }
 }
