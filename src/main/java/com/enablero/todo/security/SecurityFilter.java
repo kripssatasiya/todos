@@ -1,5 +1,6 @@
 package com.enablero.todo.security;
 
+import com.enablero.todo.dataprovider.UserDataProvider;
 import com.enablero.todo.entity.UserEntity;
 import com.enablero.todo.repository.UserRepository;
 import jakarta.servlet.*;
@@ -18,7 +19,7 @@ import java.io.IOException;
 @Component
 public class SecurityFilter implements Filter {
 
-    private final UserRepository userRepository;
+    private final UserDataProvider userDataProvider;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -31,7 +32,7 @@ public class SecurityFilter implements Filter {
                String email = jwt.getClaim("email");
                System.out.println("email = " + email);
 
-               UserEntity user = userRepository.findByEmail(email);
+               UserEntity user = userDataProvider.findByEmail(email);
                System.out.println("user = " + user);
 
                if(user == null){

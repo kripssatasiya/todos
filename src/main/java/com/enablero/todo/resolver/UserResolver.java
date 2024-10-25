@@ -20,5 +20,4 @@ public class UserResolver {
     public List<String> getAllowListByUsers() {
         return userService.getAllowListByUsers();
     }
-
 }
