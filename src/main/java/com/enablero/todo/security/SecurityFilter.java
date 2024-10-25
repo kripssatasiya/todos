@@ -1,7 +1,7 @@
 package com.enablero.todo.security;
 
+import com.enablero.todo.dataprovider.UserDataProvider;
 import com.enablero.todo.entity.UserEntity;
-import com.enablero.todo.repository.UserRepository;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +18,7 @@ import java.io.IOException;
 @Component
 public class SecurityFilter implements Filter {
 
-    private final UserRepository userRepository;
+    private final UserDataProvider userDataProvider;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -31,7 +31,7 @@ public class SecurityFilter implements Filter {
                String email = jwt.getClaim("email");
                System.out.println("email = " + email);
 
-               UserEntity user = userRepository.findByEmail(email);
+               UserEntity user = userDataProvider.findByEmail(email);
                System.out.println("user = " + user);
 
                if(user == null){
@@ -42,6 +42,8 @@ public class SecurityFilter implements Filter {
                    return;
                }
                else{
+                   UserContextHolder.setCurrentUserEmail(email);
+
                     JwtAuthenticationToken originalAuth = (JwtAuthenticationToken) authentication;
                     JwtAuthenticationToken newAuth = new JwtAuthenticationToken(originalAuth.getToken(),
                            originalAuth.getAuthorities());
@@ -57,6 +59,9 @@ public class SecurityFilter implements Filter {
            response.setCharacterEncoding("UTF-8");
            response.getWriter().write("{\"message\": \"Unsuccessful\", \"details\": \"An error occurred during authentication: " + e.getMessage() + "\", \"httpStatusCode\": \"401 (UNAUTHORIZED)\"}");
            response.getWriter().flush();
+       }
+       finally {
+           UserContextHolder.clear();
        }
     }
 }

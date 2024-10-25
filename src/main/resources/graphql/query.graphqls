@@ -1,0 +1,16 @@
+type Query {
+    getAllowListByUsers: [String]
+    getAllTodos: [Todo]
+}
+
+scalar LocalDateTime
+
+type Todo {
+    id: ID
+    email: String!
+    title: String!
+    description: String
+    status: String
+    createdDt: LocalDateTime
+    updateDt: LocalDateTime
+}

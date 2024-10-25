@@ -8,9 +8,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class TodoApplication implements CommandLineRunner {
-
+	private final AmazonDynamoDB amazonDynamoDB;
 	@Autowired
-	private AmazonDynamoDB amazonDynamoDB;
+	public TodoApplication(AmazonDynamoDB amazonDynamoDB) {
+		this.amazonDynamoDB = amazonDynamoDB;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(TodoApplication.class, args);
@@ -29,7 +31,4 @@ public class TodoApplication implements CommandLineRunner {
 			System.err.println("DynamoDB configuration failed: " + e.getMessage());
 		}
 	}
-
-	// java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb
-
 }

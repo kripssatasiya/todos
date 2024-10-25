@@ -6,3 +6,23 @@ spring:
          issuer-uri: https://accounts.google.com
          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
 
+  graphql:
+    schema:
+      locations: classpath:graphql/
+
+aws:
+  dynamodb:
+    endpoint: http://localhost:8000
+    region: us-west-2
+    access-key: dummyAccessKey
+    secret-key: dummySecretKey
+
+cors:
+  allowed-origins: http://localhost:5173
+  allowed-methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+  allowed-headers: "*"
+  allow-credentials: true
