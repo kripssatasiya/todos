@@ -2,7 +2,6 @@ package com.enablero.todo.security;
 
 import com.enablero.todo.dataprovider.UserDataProvider;
 import com.enablero.todo.entity.UserEntity;
-import com.enablero.todo.repository.UserRepository;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import lombok.RequiredArgsConstructor;
