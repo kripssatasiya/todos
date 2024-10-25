@@ -16,8 +16,7 @@ import java.util.stream.Collectors;
 @Repository
 public class UserRepository {
 
-    private final DynamoDBMapper dynamoDBMapper;
-
+    private final DynamoDBMapper dynamoDBMapper; //use jpa directly
     @Autowired
     public UserRepository(DynamoDBMapper dynamoDBMapper) {
         this.dynamoDBMapper = dynamoDBMapper;
@@ -50,6 +49,4 @@ public class UserRepository {
                 .collect(Collectors.toList());
         return emails;
     }
-
-
 }

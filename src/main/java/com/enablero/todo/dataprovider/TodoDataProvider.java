@@ -1,11 +1,12 @@
 package com.enablero.todo.dataprovider;
 
-import com.enablero.todo.entity.TodoEntity;
+import com.enablero.todo.model.Todo;
 
 import java.util.List;
 
 public interface TodoDataProvider {
-    List<TodoEntity> getAllTodos(String email);
-    TodoEntity createOrUpdateTodo(TodoEntity todo);
-    TodoEntity findById(String id);
+    List<Todo> getAllTodos(String email);
+    Todo createOrUpdateTodo(Todo todo);
+    Todo findById(String id);
+
 }

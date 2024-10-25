@@ -1,7 +1,6 @@
 package com.enablero.todo.service.impl;
 
 import com.enablero.todo.dataprovider.TodoDataProvider;
-import com.enablero.todo.entity.TodoEntity;
 import com.enablero.todo.model.Todo;
 import com.enablero.todo.model.TodoStatus;
 import com.enablero.todo.service.TodoService;
@@ -9,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class TodoServiceImpl implements TodoService {
@@ -20,54 +21,56 @@ public class TodoServiceImpl implements TodoService {
         this.todoDataProvider = todoDataProvider;
     }
 
+
     @Override
-    public List<TodoEntity> getAllTodos(String email) {
-        System.out.println("Email  passed to repository = " +email);
+    public List<Todo> getAllTodos(String email) {
         return todoDataProvider.getAllTodos(email);
     }
 
     @Override
-    public TodoEntity createOrUpdateTodo(Todo todoInput , String email) {
+    public Todo createOrUpdateTodo(Todo todoInput, String email) {
         if (todoInput == null) {
             throw new RuntimeException("TodoInput object cannot be null");
         }
 
-        TodoEntity todo;
+        Todo todo;
         if (todoInput.getId() != null) {
             todo = todoDataProvider.findById(todoInput.getId());
-            if (todo == null || !todo.getEmail().equals(email)) {
-                throw new RuntimeException("Todo not found or unauthorized access");
+            if (todo == null) {
+                throw new RuntimeException("Todo not found");
+            }
+            if (!todo.getEmail().equals(email)) {
+                throw new RuntimeException("Unauthorized access to the Todo");
             }
         } else {
-            todo = new TodoEntity();
-            todo.setCreatedDt(LocalDateTime.now());
+            todo = new Todo();
+            todo.setId(UUID.randomUUID().toString());
+            todo.setCreatedDt(LocalDateTime.now(ZoneOffset.UTC));
             todo.setStatus(TodoStatus.PENDING);
         }
 
         todo.setEmail(email);
-
-        if (todoInput.getTitle() != null) {
-            todo.setTitle(todoInput.getTitle());
-        }
-        if (todoInput.getDescription() != null) {
-            todo.setDescription(todoInput.getDescription());
-        }
+        todo.setTitle(todoInput.getTitle());
+        todo.setDescription(todoInput.getDescription());
         if (todoInput.getStatus() != null) {
             todo.setStatus(todoInput.getStatus());
         }
-        todo.setUpdateDt(LocalDateTime.now());
+        todo.setUpdateDt(LocalDateTime.now(ZoneOffset.UTC));
         return todoDataProvider.createOrUpdateTodo(todo);
     }
 
     @Override
     public String deleteTodo(String id) {
-        TodoEntity todoEntity = todoDataProvider.findById(id);
-        if (todoEntity != null) {
-            todoEntity.setStatus(TodoStatus.ARCHIVED);
-            todoDataProvider.createOrUpdateTodo(todoEntity);
-            return "Todo marked as deleted!";
+        Todo todo = todoDataProvider.findById(id);
+        if (todo == null) {
+            throw new RuntimeException("Todo not found");
         }
-        return "Todo not found.";
+        todo.setStatus(TodoStatus.ARCHIVED);
+        todo.setUpdateDt(LocalDateTime.now(ZoneOffset.UTC));
+        Todo updatedTodo = todoDataProvider.createOrUpdateTodo(todo);
+        if (updatedTodo == null) {
+            throw new RuntimeException("Failed to update Todo status");
+        }
+        return "Todo successfully deleted!!";
     }
-
 }

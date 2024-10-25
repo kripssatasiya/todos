@@ -1,15 +1,12 @@
 package com.enablero.todo.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import java.time.LocalDateTime;
 
-@NoArgsConstructor
+@Data
 @AllArgsConstructor
-@Getter
-@Setter
+@NoArgsConstructor
 public class Todo {
     private String id;
     private String email;
@@ -18,5 +15,4 @@ public class Todo {
     private TodoStatus status;
     private LocalDateTime createdDt;
     private LocalDateTime updateDt;
-
 }

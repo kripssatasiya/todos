@@ -1,6 +1,5 @@
 package com.enablero.todo.resolver;
 
-import com.enablero.todo.entity.TodoEntity;
 import com.enablero.todo.model.Todo;
 import com.enablero.todo.security.UserContextHolder;
 import com.enablero.todo.service.TodoService;
@@ -21,20 +20,20 @@ public class TodoResolver {
         this.todoService = todoService;
     }
 
+
     @QueryMapping("getAllTodos")
-    public List<TodoEntity> getAllTodos(){
+    public List<Todo> getAllTodos() {
         String email = UserContextHolder.getCurrentUserEmail();
-        System.out.println("Email extracted and passed to service = " +email);
         return todoService.getAllTodos(email);
     }
 
     @MutationMapping("createOrUpdateTodo")
-    public TodoEntity createOrUpdateTodo(@Argument("input") Todo input) {
+    public Todo createOrUpdateTodo(@Argument("input") Todo input) {
         String email = UserContextHolder.getCurrentUserEmail();
-        return todoService.createOrUpdateTodo(input , email);
+        return todoService.createOrUpdateTodo(input, email);
     }
 
-   @MutationMapping("deleteTodo")
+    @MutationMapping("deleteTodo")
     public String deleteTodo(@Argument("id") String id) {
         return todoService.deleteTodo(id);
     }
